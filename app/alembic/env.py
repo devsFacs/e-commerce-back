@@ -36,7 +36,7 @@ def get_url():
     port = os.getenv("MYSQL_PORT")
     server = os.getenv("MYSQL_HOST")
     db = os.getenv("MYSQL_DATABASE")
-    return f'mysql+pymysql://{user}:{password}@{server}:{port}/{db}'
+    return f"mysql+pymysql://{user}:{password}@{server}:{port}/{db}"
 
 
 def run_migrations_offline():

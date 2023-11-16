@@ -21,12 +21,12 @@ def get_sertvice():
 
 
 def insert_data(
-        spreadsheetId: str,
-        last_row: int,
-        begin_title: str,
-        end_title: str,
-        value: list,
-        sheet: str,
+    spreadsheetId: str,
+    last_row: int,
+    begin_title: str,
+    end_title: str,
+    value: list,
+    sheet: str,
 ):
     """
     for insert data from api to the google sheet
@@ -45,7 +45,10 @@ def insert_data(
     ]
     body = {"range": range_, "values": values, "majorDimension": "ROWS"}
     request = (
-        get_sertvice().spreadsheets().values().update(
+        get_sertvice()
+        .spreadsheets()
+        .values()
+        .update(
             spreadsheetId=spreadsheetId,
             range=range_,
             valueInputOption="USER_ENTERED",
@@ -67,7 +70,11 @@ def get_data(spreadsheet_id: str, sheet: str, begin: str, end: str, row: int):
     """
     range_ = f"{sheet}!{begin}{row}:{end}"
     result = (
-        get_sertvice().spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=range_).execute()
+        get_sertvice()
+        .spreadsheets()
+        .values()
+        .get(spreadsheetId=spreadsheet_id, range=range_)
+        .execute()
     )
     rows = result.get("values", {})
     return rows
@@ -77,16 +84,16 @@ def insert_row(spreadsheet_id: str, sheet_id: str, last_row: int):
     sheet = get_sertvice().spreadsheets()
     spreadsheet_id = spreadsheet_id
     body_add = {
-        'requests': [
+        "requests": [
             {
-                'insertDimension': {
-                    'range': {
-                        'sheetId': sheet_id,
-                        'dimension': 'ROWS',
-                        'startIndex': last_row,
-                        'endIndex': last_row + 100,
+                "insertDimension": {
+                    "range": {
+                        "sheetId": sheet_id,
+                        "dimension": "ROWS",
+                        "startIndex": last_row,
+                        "endIndex": last_row + 100,
                     },
-                    "inheritFromBefore": True
+                    "inheritFromBefore": True,
                 }
             }
         ]
@@ -99,13 +106,13 @@ def delete_row(spreadsheet_id: str, sheet_id: str, last_row: int):
     sheet = get_sertvice().spreadsheets()
     spreadsheet_id = spreadsheet_id
     body_delete = {
-        'requests': [
+        "requests": [
             {
-                'deleteDimension': {
-                    'range': {
-                        'sheetId': sheet_id,
-                        'dimension': 'ROWS',
-                        'startIndex': last_row,
+                "deleteDimension": {
+                    "range": {
+                        "sheetId": sheet_id,
+                        "dimension": "ROWS",
+                        "startIndex": last_row,
                     },
                 }
             }
@@ -117,38 +124,33 @@ def delete_row(spreadsheet_id: str, sheet_id: str, last_row: int):
 
 def get_sheet_id_by_name(spreadsheet_id: str, sheet_name: str):
     # sheet = service.spreadsheets()
-    spreadsheet = get_sertvice().spreadsheets().get(spreadsheetId=spreadsheet_id).execute()
+    spreadsheet = (
+        get_sertvice().spreadsheets().get(spreadsheetId=spreadsheet_id).execute()
+    )
     sheet_id = None
-    for _sheet in spreadsheet['sheets']:
-        if _sheet['properties']['title'] == sheet_name:
-            sheet_id = _sheet['properties']['sheetId']
+    for _sheet in spreadsheet["sheets"]:
+        if _sheet["properties"]["title"] == sheet_name:
+            sheet_id = _sheet["properties"]["sheetId"]
     return sheet_id
 
 
 def create_spreadsheet(name: str) -> str:
-    spreadsheet = {
-        'properties': {
-            'title': name
-        }
-    }
-    spreadsheet = get_sertvice().spreadsheets().create(body=spreadsheet, field='spreadsheetId').execute()
-    sheet_id = spreadsheet.get('spreadsheetId')
+    spreadsheet = {"properties": {"title": name}}
+    spreadsheet = (
+        get_sertvice()
+        .spreadsheets()
+        .create(body=spreadsheet, field="spreadsheetId")
+        .execute()
+    )
+    sheet_id = spreadsheet.get("spreadsheetId")
     return sheet_id
 
 
 def create_sheets(speadsheet_id: str, title: str):
-    request = {
-        'requests': [
-            {
-                'addSheets': {
-                    'properties': {
-                        'title': title
-                    }
-                }
-            }
-        ]
-    }
-    get_sertvice().spreadsheets().batchUpdate(spreadsheetId=speadsheet_id, body=request).execute()
+    request = {"requests": [{"addSheets": {"properties": {"title": title}}}]}
+    get_sertvice().spreadsheets().batchUpdate(
+        spreadsheetId=speadsheet_id, body=request
+    ).execute()
 
 
 def check_if_folder_already_exists(folder_name: str, parent_id: str = "root") -> bool:

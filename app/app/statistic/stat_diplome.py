@@ -23,7 +23,6 @@ def get_by_params(sexe: str, all_etudiant: any, diplome: str) -> int:
 
 
 class PDF(FPDF):
-
     def add_title(pdf: FPDF, data: Any):
 
         pdf.add_font("alger", "", "Algerian.ttf", uni=True)
@@ -31,7 +30,7 @@ class PDF(FPDF):
         image_univ = "images/logo_univ.jpg"
         image_fac = "images/logo_science.jpg"
 
-        txt=pdf.add_font("alger", "", "Algerian.ttf", uni=True)
+        txt = pdf.add_font("alger", "", "Algerian.ttf", uni=True)
 
         pdf.image(image_univ, x=30, y=26, w=30, h=30)
         pdf.image(image_fac, x=155, y=26, w=30, h=30)
@@ -72,8 +71,11 @@ class PDF(FPDF):
         pdf.cell(15, 10, txt="", border=0, ln=1, align="L")
 
     def create_statistic_by_diplome(data: Any, all_etudiant, schemas: str):
-        titre_stat = [{"name": 'Sexe', "value": ["Sexe"]}, {"name": "Diplome", "value": ["Licence", "Master"]},
-                      {"name": "Total", "value": ["Total"]}]
+        titre_stat = [
+            {"name": "Sexe", "value": ["Sexe"]},
+            {"name": "Diplome", "value": ["Licence", "Master"]},
+            {"name": "Total", "value": ["Total"]},
+        ]
 
         width: int = 50
         height: int = 10
@@ -87,7 +89,9 @@ class PDF(FPDF):
         pdf.set_font("arial", "BI", 10)
         for titre in titre_stat:
             if titre["name"] == "Sexe" or titre["name"] == "Total":
-                pdf.cell(width, height * 2, txt=titre["name"], border=1, ln=0, align="C")
+                pdf.cell(
+                    width, height * 2, txt=titre["name"], border=1, ln=0, align="C"
+                )
             else:
                 pdf.cell(width, height, txt=titre["name"], border=1, ln=0, align="C")
         pdf.cell(0, height, txt="", border=0, ln=1, align="L")
@@ -95,9 +99,23 @@ class PDF(FPDF):
         for titre in titre_stat:
             for value in titre["value"]:
                 if titre["name"] == "Sexe" or titre["name"] == "Total":
-                    pdf.cell(width / (len(titre["value"])), height, txt="", border=0, ln=0, align="C")
+                    pdf.cell(
+                        width / (len(titre["value"])),
+                        height,
+                        txt="",
+                        border=0,
+                        ln=0,
+                        align="C",
+                    )
                 else:
-                    pdf.cell(width / (len(titre["value"])), height, txt=value, border=1, ln=0, align="C")
+                    pdf.cell(
+                        width / (len(titre["value"])),
+                        height,
+                        txt=value,
+                        border=1,
+                        ln=0,
+                        align="C",
+                    )
         pdf.cell(0, height, txt="", border=0, ln=1, align="L")
 
         for sexe in sexe_:
@@ -106,9 +124,23 @@ class PDF(FPDF):
                     pdf.set_font("arial", "BI", 10)
                     response = get_by_params(sexe, all_etudiant, value)
                     if index_1 == 0:
-                        pdf.cell(width / (len(titre["value"])), height, txt=sexe, border=1, ln=0, align="C")
+                        pdf.cell(
+                            width / (len(titre["value"])),
+                            height,
+                            txt=sexe,
+                            border=1,
+                            ln=0,
+                            align="C",
+                        )
                     else:
-                        pdf.cell(width / (len(titre["value"])), height, txt=str(response), border=1, ln=0, align="C")
+                        pdf.cell(
+                            width / (len(titre["value"])),
+                            height,
+                            txt=str(response),
+                            border=1,
+                            ln=0,
+                            align="C",
+                        )
 
             pdf.cell(0, height, txt="", border=0, ln=1, align="L")
 

@@ -130,7 +130,7 @@ class PDF(FPDF):
 
         type_result = ["definitive", "compense"]
         for type_ in type_result:
-            pdf.watermark('Faculté des Sciences', font_style='BI')
+            pdf.watermark("Faculté des Sciences", font_style="BI")
             pdf.add_page()
             PDF.add_title(pdf=pdf, data=data, sems=sems, title=titre)
             pdf.set_margin(10)
@@ -146,13 +146,13 @@ class PDF(FPDF):
             pdf.cell(1, 5, txt="")
             pdf.cell(20, 5, txt="Crédit", border=1, align="C")
             for i, etudiant in enumerate(admis[type_]):
-                num_carte_ = etudiant['N° Carte']
-                mean = etudiant['mean']
-                credit = etudiant['credit']
+                num_carte_ = etudiant["N° Carte"]
+                mean = etudiant["mean"]
+                credit = etudiant["credit"]
                 name = f"{etudiant['last_name']} {etudiant['first_name']}"
                 pdf.cell(1, 7, txt="", ln=1)
                 pdf.set_font("arial", "I", 10)
-                pdf.cell(12, 5, txt=str(i+1), border=1, align="C")
+                pdf.cell(12, 5, txt=str(i + 1), border=1, align="C")
                 pdf.cell(1, 5, txt="")
                 pdf.cell(18, 5, txt=num_carte_, border=1)
                 pdf.cell(1, 5, txt="")

@@ -11,4 +11,3 @@ def get_folder_file_id_by_name(folder_name: str, folder_id: str = "root") -> str
         if file["title"] == folder_name:
             folder_id = file["id"]
             return folder_id
-

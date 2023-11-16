@@ -2,7 +2,9 @@ from typing import List, Dict, Any
 from .connect_to_drive import get_drive
 
 
-def all_file_by_folder_id(folder_id: str = "root", file_id: str = "") -> List[Dict[str, Any]]:
+def all_file_by_folder_id(
+    folder_id: str = "root", file_id: str = ""
+) -> List[Dict[str, Any]]:
     new_array = []
     file_list = (
         get_drive()

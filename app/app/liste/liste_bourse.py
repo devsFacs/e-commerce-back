@@ -6,7 +6,6 @@ from app.utils import get_niveau_long, clear_name
 
 
 class PDF(FPDF):
-
     def add_title(pdf: FPDF, data: Any, title: str):
 
         pdf.add_font("alger", "", "Algerian.ttf", uni=True)
@@ -37,9 +36,9 @@ class PDF(FPDF):
 
     def create_list_bourse(mention: str, all_data: Any, type_: str):
         pdf = PDF("P", "mm", "a4")
-        pdf.watermark('Faculté des Sciences', font_style='BI')
+        pdf.watermark("Faculté des Sciences", font_style="BI")
         pdf.add_page()
-        data = {'mention': all_data['mention'], 'anne': all_data['year']}
+        data = {"mention": all_data["mention"], "anne": all_data["year"]}
 
         titre = f"LISTE DES ÉTUDIANTS BOURSIER {type_.upper()}"
         PDF.add_title(pdf=pdf, data=data, title=titre)
@@ -47,15 +46,17 @@ class PDF(FPDF):
         num = "N°"
         num_c = "N° Carte"
         nom_et_prenom = "Nom et prénom"
-        level = ['l1', 'l2', 'l3', 'm1', 'm2']
-        for i, journey in enumerate(all_data['journey']):
+        level = ["l1", "l2", "l3", "m1", "m2"]
+        for i, journey in enumerate(all_data["journey"]):
             for niv in level:
                 if len(journey[niv]) != 0:
                     pdf.add_page()
                     pdf.set_font("arial", "B", 12)
                     pdf.cell(0, 5, txt=f"Parcours: {journey['name']}", ln=1, align="L")
                     pdf.cell(1, 1, txt="", ln=1)
-                    pdf.cell(0, 5, txt=f"Niveau:{get_niveau_long(niv)}", ln=1, align="L")
+                    pdf.cell(
+                        0, 5, txt=f"Niveau:{get_niveau_long(niv)}", ln=1, align="L"
+                    )
                     pdf.cell(1, 4, txt="", ln=1)
                     pdf.set_font("arial", "BI", 10)
                     pdf.cell(1, 5, txt="")

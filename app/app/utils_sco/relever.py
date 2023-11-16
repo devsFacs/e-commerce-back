@@ -17,7 +17,7 @@ def relever_note(num_carte: str, date: str, data: Any, note: Any) -> str:
     pdf = PDF()
 
     # set watermark prior to calling add_page()
-    pdf.watermark('Faculté des Sciences', y=175, font_style='BI')
+    pdf.watermark("Faculté des Sciences", y=175, font_style="BI")
     pdf.add_page()
     pdf.l_margin = 0
     pdf.rect(3, 3, 204, 291)
@@ -55,7 +55,7 @@ def relever_note(num_carte: str, date: str, data: Any, note: Any) -> str:
     titre_1 = "Les unité d'enseignements"
     titre_2 = "Notes(/20)"
     titre_3 = "Coéfficients"
-    titre_4 = 'Crédits'
+    titre_4 = "Crédits"
     titre_5 = "Status de l'UE"
     text_6 = "Décision du jury:"
     text_7 = "Fianarantsoa, le "
@@ -159,12 +159,19 @@ def relever_note(num_carte: str, date: str, data: Any, note: Any) -> str:
 
     pdf.cell(30, 5, txt=titre_5, border=1, ln=1, align="C", fill=True)
 
-    for index_ue, value_ue in enumerate(note['ue']):
+    for index_ue, value_ue in enumerate(note["ue"]):
         pdf.set_top_margin(20)
         pdf.cell(30, 1, txt="", ln=1)
         pdf.cell(12, 2, txt="", ln=0)
         pdf.set_font("arial", "BI", 9)
-        pdf.cell(98, 5, txt=f"U.E-{index_ue + 1}: {value_ue['name']}", border=1, ln=0, align="C")
+        pdf.cell(
+            98,
+            5,
+            txt=f"U.E-{index_ue + 1}: {value_ue['name']}",
+            border=1,
+            ln=0,
+            align="C",
+        )
         pdf.set_font("arial", "I", 11)
         pdf.cell(1, 1, txt="", ln=0)
         pdf.cell(19, 5, txt="", border=1, ln=0, align="C")
@@ -174,17 +181,24 @@ def relever_note(num_carte: str, date: str, data: Any, note: Any) -> str:
         pdf.cell(14, 5, txt="", border=1, ln=0, align="C")
         pdf.cell(1, 1, txt="", ln=0)
         pdf.cell(29, 5, txt="", border=1, ln=1, align="C")
-        for index, value in enumerate(value_ue['ec']):
+        for index, value in enumerate(value_ue["ec"]):
             pdf.set_top_margin(20)
             pdf.cell(30, 1, txt="", ln=1)
             pdf.cell(12, 2, txt="", ln=0)
             pdf.set_font("arial", "I", 9)
-            pdf.cell(98, 5, txt=f"E.C-{index + 1}: {value['name']}", border=1, ln=0, align="L")
+            pdf.cell(
+                98,
+                5,
+                txt=f"E.C-{index + 1}: {value['name']}",
+                border=1,
+                ln=0,
+                align="L",
+            )
             pdf.set_font("arial", "I", 11)
             pdf.cell(1, 1, txt="", ln=0)
-            pdf.cell(19, 5, txt=str(value['note']), border=1, ln=0, align="C")
+            pdf.cell(19, 5, txt=str(value["note"]), border=1, ln=0, align="C")
             pdf.cell(1, 1, txt="", ln=0)
-            pdf.cell(24, 5, txt=str(value['weight']), border=1, ln=0, align="C")
+            pdf.cell(24, 5, txt=str(value["weight"]), border=1, ln=0, align="C")
             pdf.cell(1, 1, txt="", ln=0)
             pdf.cell(14, 5, txt="", border=1, ln=0, align="C")
             pdf.cell(1, 1, txt="", ln=0)
@@ -193,17 +207,28 @@ def relever_note(num_carte: str, date: str, data: Any, note: Any) -> str:
         pdf.cell(30, 1, txt="", ln=1)
         pdf.cell(12, 2, txt="", ln=0)
         pdf.set_font("arial", "BI", 9)
-        pdf.cell(98, 5, txt=f"NOTE SOUS TOTAL U.E-{index_ue + 1}", border=1, ln=0, align="C")
+        pdf.cell(
+            98, 5, txt=f"NOTE SOUS TOTAL U.E-{index_ue + 1}", border=1, ln=0, align="C"
+        )
         pdf.set_font("arial", "I", 9)
         pdf.cell(1, 1, txt="", ln=0)
-        pdf.cell(19, 5, txt=str(format(value_ue['note'], '.3f')), border=1, ln=0, align="C")
+        pdf.cell(
+            19, 5, txt=str(format(value_ue["note"], ".3f")), border=1, ln=0, align="C"
+        )
         pdf.cell(1, 1, txt="", ln=0)
         pdf.cell(24, 5, txt="", border=1, ln=0, align="C")
         pdf.cell(1, 1, txt="", ln=0)
-        pdf.cell(14, 5, txt=str(value_ue['credit']), border=1, ln=0, align="C")
+        pdf.cell(14, 5, txt=str(value_ue["credit"]), border=1, ln=0, align="C")
         pdf.cell(1, 1, txt="", ln=0)
         pdf.set_font("alger", "", 9)
-        pdf.cell(29, 5, txt=validation(value_ue['note'], data["code"]), border=1, ln=1, align="C")
+        pdf.cell(
+            29,
+            5,
+            txt=validation(value_ue["note"], data["code"]),
+            border=1,
+            ln=1,
+            align="C",
+        )
 
     pdf.set_top_margin(20)
     pdf.cell(30, 1, txt="", ln=1)
@@ -212,7 +237,7 @@ def relever_note(num_carte: str, date: str, data: Any, note: Any) -> str:
     pdf.cell(98, 6, txt=moyenne.upper(), border=1, ln=0, align="C")
     pdf.set_font("arial", "I", 10)
     pdf.cell(1, 1, txt="", ln=0)
-    pdf.cell(19, 6, txt=str(format(note['mean'], '.3f')), border=1, ln=0, align="C")
+    pdf.cell(19, 6, txt=str(format(note["mean"], ".3f")), border=1, ln=0, align="C")
     pdf.cell(1, 1, txt="", ln=0)
     pdf.cell(24, 5, txt="", ln=0)
     pdf.cell(1, 1, txt="", ln=0)
@@ -241,6 +266,8 @@ class PDF(FPDF):
     def footer(self) -> None:
         self.set_y(-12)
         self.set_font("arial", "", 9)
-        self.cell(1, 4, txt="N.B: Ce relevé de Notes ne doit être en aucun cas remis", ln=1)
+        self.cell(
+            1, 4, txt="N.B: Ce relevé de Notes ne doit être en aucun cas remis", ln=1
+        )
         self.cell(12, 6, txt="", ln=0)
         self.cell(1, 6, txt="à l'intéressé sous peine d'annulation.", ln=0)

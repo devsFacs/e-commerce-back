@@ -42,7 +42,7 @@ class Settings(BaseSettings):
     MYSQL_DATABASE: str = os.getenv("MYSQL_DATABASE")
     EXTERNAL_DATABASE: str = os.getenv("EXTERNAL_DATABASE")
 
-    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}'
+    SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}"
 
     SMTP_TLS: bool = True
     SMTP_PORT: Optional[int] = None

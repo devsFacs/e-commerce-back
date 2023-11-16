@@ -10,28 +10,29 @@ from math import pi, cos, sin
 
 
 class PDFText360(FPDF):
-
     def _circle_text_transform(self, x, y, txt, tx=0, fy=0, tw=0, fw=0):
 
         fw += 90 + float(tw)
         tw *= pi / 180
         fw *= pi / 180
 
-        if tx == '': tx = cos(float(tw))
+        if tx == "":
+            tx = cos(float(tw))
         ty = sin(float(tw))
         fx = cos(float(fw))
-        if fy == '': fy = sin(float(fw))
+        if fy == "":
+            fy = sin(float(fw))
 
-        s = 'BT %.2f %.2f %.2f %.2f %.2f %.2f Tm (%s) Tj ET' % (
+        s = "BT %.2f %.2f %.2f %.2f %.2f %.2f Tm (%s) Tj ET" % (
             tx,
             ty,
             fx,
             fy,
             x * self.k,
             (self.h - y) * self.k,
-            util.escape_parens(txt)
+            util.escape_parens(txt),
         )
-        s = f'q {self.text_color}  {s}  Q'
+        s = f"q {self.text_color}  {s}  Q"
 
         self._out(s)
 
@@ -46,8 +47,8 @@ class PDFText360(FPDF):
         if text == None:
             return
 
-        for non_printable in ('\n', '\t', '\r'):
-            text = text.replace(non_printable, '')
+        for non_printable in ("\n", "\t", "\r"):
+            text = text.replace(non_printable, "")
 
         if len(text) == 0:
             return
@@ -67,10 +68,12 @@ class PDFText360(FPDF):
             st_y = sin((buffer * pi) / 180)
             st_target_y = y + (-st_y * width / 2)
 
-            self._circle_text_transform(st_target_x, st_target_y, temp, '', '', 90 - buffer)
+            self._circle_text_transform(
+                st_target_x, st_target_y, temp, "", "", 90 - buffer
+            )
             buffer += value_degrees
 
-        if self.underline and text != '':
+        if self.underline and text != "":
             # store line width
             line_width = self.line_width
 

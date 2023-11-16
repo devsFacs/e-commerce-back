@@ -7,7 +7,6 @@ from sqlalchemy.orm import Session
 
 
 class CRUDProduct(CRUDBase[Product, ProductCreate, ProductUpdate]):
-
     def get_by_name(self, db: Session, *, name: str) -> Optional[Product]:
         return db.query(Product).filter(Product.name == name).first()
 

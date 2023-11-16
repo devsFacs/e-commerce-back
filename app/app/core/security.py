@@ -12,9 +12,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 ALGORITHM = "HS256"
 
 
-def create_access_token(
-    data: dict, expires_delta: timedelta = None
-) -> str:
+def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta

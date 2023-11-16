@@ -37,7 +37,7 @@ class PDF(FPDF):
             if len(etudiants[niv]) != 0:
                 titre = f"LISTE DES ÉTUDIANTS ADMIS PAR SÉLÉCTION DE DOSSIER EN {niv}"
                 pdf.add_page()
-                pdf.watermark('Faculté des Sciences',  font_style='BI')
+                pdf.watermark("Faculté des Sciences", font_style="BI")
                 PDF.add_title(pdf=pdf, data=data, title=titre)
 
                 num = "N°"
@@ -52,7 +52,9 @@ class PDF(FPDF):
                 num_ = 1
                 for i, etudiant in enumerate(etudiants[niv]):
                     num_select_ = etudiant["num_select"]
-                    name = f"{clear_name(etudiant['last_name'])} {etudiant['first_name']}"
+                    name = (
+                        f"{clear_name(etudiant['last_name'])} {etudiant['first_name']}"
+                    )
                     pdf.cell(1, 7, txt="", ln=1)
                     pdf.set_font("arial", "I", 10)
                     pdf.cell(1, 5, txt="")

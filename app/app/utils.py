@@ -30,26 +30,30 @@ def _get_date():
 
 
 def send_email(
-        email_to: str,
-        subject_template: str = "",
-        html_template: str = "",
-        file_path: str = "",
-        file_name: str = "",
-        environment=None,
+    email_to: str,
+    subject_template: str = "",
+    html_template: str = "",
+    file_path: str = "",
+    file_name: str = "",
+    environment=None,
 ) -> None:
     if environment is None:
         environment = {}
     message = MIMEMultipart()
-    message['From'] = settings.EMAILS_FROM_NAME + " <" + settings.EMAILS_FROM_EMAIL + ">"
-    message['To'] = email_to
-    message['Subject'] = subject_template
+    message["From"] = (
+        settings.EMAILS_FROM_NAME + " <" + settings.EMAILS_FROM_EMAIL + ">"
+    )
+    message["To"] = email_to
+    message["Subject"] = subject_template
     if os.path.exists(file_path):
-        with open(file_path, 'rb') as pdf_file:
-            pdf_attachment = MIMEApplication(pdf_file.read(), _subtype='pdf')
-            pdf_attachment.add_header('content-disposition', 'attachment', filename=file_name)
+        with open(file_path, "rb") as pdf_file:
+            pdf_attachment = MIMEApplication(pdf_file.read(), _subtype="pdf")
+            pdf_attachment.add_header(
+                "content-disposition", "attachment", filename=file_name
+            )
             message.attach(pdf_attachment)
 
-    message.attach(MIMEText(html_template, 'html'))
+    message.attach(MIMEText(html_template, "html"))
 
     # Connect to the SMTP server
     with smtplib.SMTP(settings.SMTP_SERVER, settings.SMTP_PORT) as server:
@@ -68,8 +72,8 @@ def send_student_transcript(email_to, name, semester, num_carte):
     with open(Path(settings.EMAIL_TEMPLATES_DIR) / "email.html") as f:
         template_str = f.read()
 
-        template_str = template_str.replace('{{name}}', name)
-        template_str = template_str.replace('{{semester}}', semester)
+        template_str = template_str.replace("{{name}}", name)
+        template_str = template_str.replace("{{semester}}", semester)
 
     send_email(
         email_to=email_to,
@@ -155,7 +159,9 @@ def verify_password_reset_token(token: str) -> Optional[str]:
 
 
 def create_secret():
-    res = "".join(secrets.choice(string.ascii_letters + string.digits) for x in range(10))
+    res = "".join(
+        secrets.choice(string.ascii_letters + string.digits) for x in range(10)
+    )
     return res
 
 
@@ -174,7 +180,7 @@ def create_num_carte(plugged: str, num: str):
     key: str = plugged[0:1]
     nbr_zero: int = 6 - len(num)
     response: str = "".join("0" for x in range(nbr_zero))
-    return f'{key.upper()}{response}{num}'
+    return f"{key.upper()}{response}{num}"
 
 
 def decode_schemas(schema: str):
@@ -307,15 +313,15 @@ def get_niveau_(sems_a: str, sems_b: str) -> str:
 
 
 def get_niveau_long(niv: str) -> str:
-    if niv == 'l1':
+    if niv == "l1":
         return "PREMIÈRE ANNÉE"
-    if niv == 'l2':
+    if niv == "l2":
         return "DEUXIÈME ANNÉE"
-    if niv == 'l3':
+    if niv == "l3":
         return "TROISIÈME ANNÉE"
-    if niv == 'm1':
+    if niv == "m1":
         return "QUATRIÈME ANNÉE"
-    if niv == 'm2':
+    if niv == "m2":
         return "CINQUIÈME ANNÉE"
 
 
@@ -323,10 +329,14 @@ def validation_semester(sems_i: str, credit: int, total_cred: int, year: str):
     response = {"year": year}
     if sems_i:
         if credit == total_cred:
-            response["status"] = f"Étudiant(e) ayant validé(e) les {total_cred} crédit définitive."
+            response[
+                "status"
+            ] = f"Étudiant(e) ayant validé(e) les {total_cred} crédit définitive."
             response["code"] = True
         else:
-            response["status"] = f"Étudiant(e) ayant validé(e) les {total_cred} crédit par compensation."
+            response[
+                "status"
+            ] = f"Étudiant(e) ayant validé(e) les {total_cred} crédit par compensation."
             response["code"] = True
     else:
         response["status"] = "Étudiant(e) redoublé(e)"
@@ -339,7 +349,7 @@ def check_table_info(schemas: str) -> list:
     metadata = MetaData(schema=schemas)
     metadata.reflect(bind=engine)
     for table in metadata.tables:
-        table_name = table.replace(f'{schemas}.', '')
+        table_name = table.replace(f"{schemas}.", "")
         if table_name[0:4] != "note":
             all_table.append(table_name)
     return all_table
@@ -350,7 +360,7 @@ def check_table_note(schemas: str = "scolary") -> list:
     metadata = MetaData(schema=schemas)
     metadata.reflect(bind=engine)
     for table in metadata.tables:
-        table_name = table.replace(f'{schemas}.', '')
+        table_name = table.replace(f"{schemas}.", "")
         if table_name[0:4] == "note":
             all_table.append(table_name)
     return all_table
@@ -396,8 +406,9 @@ def send_new_account(email_to: str, password: str) -> any:
 
 
 def check_email_valide(email: EmailStr) -> str:
-    response = requests.get("https://isitarealemail.com/api/email/validate",
-                            params={"email": email})
+    response = requests.get(
+        "https://isitarealemail.com/api/email/validate", params={"email": email}
+    )
     status = response.json()["status"]
     return status
 
@@ -429,8 +440,21 @@ def find_by_key(list_: list, key_: str, value: str) -> int:
 
 
 def convert_date(date: str) -> str:
-    month = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet",
-             "Aout", "Séptembre", "Octobre", "Novembre", "Décembre", ""]
+    month = [
+        "Janvier",
+        "Février",
+        "Mars",
+        "Avril",
+        "Mai",
+        "Juin",
+        "Juillet",
+        "Aout",
+        "Séptembre",
+        "Octobre",
+        "Novembre",
+        "Décembre",
+        "",
+    ]
     # 1995-10-20
     if not date:
         return ""
@@ -452,7 +476,7 @@ def clear_name(name: str, nbr: int = 50) -> str:
 
 
 def format_date(date_: datetime = ""):
-    tz = pytz.timezone('Africa/Nairobi')
+    tz = pytz.timezone("Africa/Nairobi")
     if date_ == "":
         date_ = datetime.now(tz)
     return format(date_.strftime("%Y-%m-%d %H:%M"))

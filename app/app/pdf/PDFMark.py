@@ -12,17 +12,58 @@ class PDFMark(AlphaFPDF):
             alpha = 0
         elif alpha > 1:
             alpha = 1
-        self._out(f'1 gs {alpha:g} gs')
+        self._out(f"1 gs {alpha:g} gs")
+
     _watermark_data = []
     _stamp_data = []
 
-    def watermark(self, text, x=None, y=None, angle=45, alpha=1, text_color=[200, 200, 200], font='Helvetica',
-                  font_size=50, font_style=''):
-        self._watermark_data = [text, x, y, angle, alpha, text_color, font, font_size, font_style]
+    def watermark(
+        self,
+        text,
+        x=None,
+        y=None,
+        angle=45,
+        alpha=1,
+        text_color=[200, 200, 200],
+        font="Helvetica",
+        font_size=50,
+        font_style="",
+    ):
+        self._watermark_data = [
+            text,
+            x,
+            y,
+            angle,
+            alpha,
+            text_color,
+            font,
+            font_size,
+            font_style,
+        ]
 
-    def stamp(self, text, x=None, y=None, angle=45, alpha=1, text_color=[255, 0, 0], font='Helvetica', font_size=50,
-              font_style=''):
-        self._stamp_data = [text, x, y, angle, alpha, text_color, font, font_size, font_style]
+    def stamp(
+        self,
+        text,
+        x=None,
+        y=None,
+        angle=45,
+        alpha=1,
+        text_color=[255, 0, 0],
+        font="Helvetica",
+        font_size=50,
+        font_style="",
+    ):
+        self._stamp_data = [
+            text,
+            x,
+            y,
+            angle,
+            alpha,
+            text_color,
+            font,
+            font_size,
+            font_style,
+        ]
 
     def _mark(self, text_data):
         if len(text_data) != 0:

@@ -20,7 +20,6 @@ def get_by_params(niveau: str, all_etudiant: any, sexe: str, nation: str) -> int
 
 
 class PDF(FPDF):
-
     def add_title(pdf: FPDF, data: Any):
 
         pdf.add_font("alger", "", "Algerian.ttf", uni=True)
@@ -73,10 +72,14 @@ class PDF(FPDF):
         pdf.cell(15, 10, txt="", ln=1, align="L")
 
     def create_statistic_by_nation(data: Any, all_etudiant, schemas: str):
-        titre_stat = [{"name": '', "value": ["Niveau"]}, {"name": "Africaine", "value": ["M", "F"]},
-                      {"name": "Asiatique", "value": ["M", "F"]},
-                      {"name": "Comorienne", "value": ["M", "F"]}, {"name": "Européene", "value": ["M", "F"]},
-                      {"name": "Autre à préciser", "value": ["M", "F"]}]
+        titre_stat = [
+            {"name": "", "value": ["Niveau"]},
+            {"name": "Africaine", "value": ["M", "F"]},
+            {"name": "Asiatique", "value": ["M", "F"]},
+            {"name": "Comorienne", "value": ["M", "F"]},
+            {"name": "Européene", "value": ["M", "F"]},
+            {"name": "Autre à préciser", "value": ["M", "F"]},
+        ]
 
         width: int = 30
         height: int = 7
@@ -89,21 +92,37 @@ class PDF(FPDF):
         pdf.set_margin(9)
         for titre in titre_stat:
             pdf.set_font("arial", "BI", 10)
-            if titre["name"] == '':
+            if titre["name"] == "":
                 pdf.cell(width, height, txt=titre["name"], border=0, ln=0, align="C")
-            elif titre["name"] != 'Autre à préciser':
+            elif titre["name"] != "Autre à préciser":
                 pdf.cell(width, height, txt=titre["name"], border=1, ln=0, align="C")
             else:
-                pdf.cell(width + 10, height, txt=titre["name"], border=1, ln=0, align="C")
+                pdf.cell(
+                    width + 10, height, txt=titre["name"], border=1, ln=0, align="C"
+                )
                 pdf.cell(0, height, txt="", border=0, ln=1, align="L")
 
         for titre in titre_stat:
             for value in titre["value"]:
                 pdf.set_font("arial", "BI", 10)
-                if titre["name"] != 'Autre à préciser':
-                    pdf.cell(width / (len(titre["value"])), height, txt=value, border=1, ln=0, align="C")
+                if titre["name"] != "Autre à préciser":
+                    pdf.cell(
+                        width / (len(titre["value"])),
+                        height,
+                        txt=value,
+                        border=1,
+                        ln=0,
+                        align="C",
+                    )
                 else:
-                    pdf.cell((width + 10) / (len(titre["value"])), height, txt=value, border=1, ln=0, align="C")
+                    pdf.cell(
+                        (width + 10) / (len(titre["value"])),
+                        height,
+                        txt=value,
+                        border=1,
+                        ln=0,
+                        align="C",
+                    )
         pdf.cell(0, height, txt="", border=0, ln=1, align="L")
 
         for niveau in niveau_:
@@ -112,12 +131,33 @@ class PDF(FPDF):
                     pdf.set_font("arial", "BI", 10)
                     response = get_by_params(niveau, all_etudiant, value, titre["name"])
                     if index_1 == 0:
-                        pdf.cell(width / (len(titre["value"])), height, txt=niveau, border=1, ln=0, align="C")
+                        pdf.cell(
+                            width / (len(titre["value"])),
+                            height,
+                            txt=niveau,
+                            border=1,
+                            ln=0,
+                            align="C",
+                        )
                     else:
-                        if titre["name"] != 'Autre à préciser':
-                            pdf.cell(width / (len(titre["value"])), height, txt=str(response), border=1, ln=0, align="C")
+                        if titre["name"] != "Autre à préciser":
+                            pdf.cell(
+                                width / (len(titre["value"])),
+                                height,
+                                txt=str(response),
+                                border=1,
+                                ln=0,
+                                align="C",
+                            )
                         else:
-                            pdf.cell((width + 10) / (len(titre["value"])), height, txt=str(0), border=1, ln=0, align="C")
+                            pdf.cell(
+                                (width + 10) / (len(titre["value"])),
+                                height,
+                                txt=str(0),
+                                border=1,
+                                ln=0,
+                                align="C",
+                            )
 
             pdf.cell(0, height, txt="", border=0, ln=1, align="L")
 

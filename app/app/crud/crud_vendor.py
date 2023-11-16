@@ -7,7 +7,6 @@ from sqlalchemy.orm import Session
 
 
 class CRUDVendors(CRUDBase[Vendors, VendorsCreate, VendorsUpdate]):
-
     def get_by_name(self, db: Session, *, name: str) -> Optional[Vendors]:
         return db.query(Vendors).filter(Vendors.name == name).first()
 

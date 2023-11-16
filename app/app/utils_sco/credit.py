@@ -55,8 +55,10 @@ def attestation_validation_credit(num_carte: str, date: str, data: Any) -> str:
     registre = f"N° sur le registre:"
     registre_etudiant = f"{num_carte} RI-{data['register']}"
 
-    text_3 = f"A validé les {get_niveau_credit(data['level'])['credit']} " \
-             f"crédits de la {get_niveau_credit(data['level'])['level']}"
+    text_3 = (
+        f"A validé les {get_niveau_credit(data['level'])['credit']} "
+        f"crédits de la {get_niveau_credit(data['level'])['level']}"
+    )
     text_3_1 = f"en {data['journey']}"
     text_4 = "En foi de quoi, la présence d'attestation lui est delivré pour servir et valoir ce que le droit"
 
@@ -157,10 +159,15 @@ if __name__ == "__main__":
     # string = "éôfèçdn&n sdgfgz"
     # strd = string.replace(" ","_")
     # print(unidecode.unidecode(strd))
-    data = {"nom": "RALAITSIMANOLAKAVANA", "prenom": "Henri Franck",
-            "date_naiss": "07 octobre 1995 ", "lieu_naiss": " Fianarantsoa",
-            "niveau": "M2", "mention": "Mathématiques et Applications",
-            "journey": "Mathématiques et Informatiques pous la Sciences Social",
-            "registre": "20"}
+    data = {
+        "nom": "RALAITSIMANOLAKAVANA",
+        "prenom": "Henri Franck",
+        "date_naiss": "07 octobre 1995 ",
+        "lieu_naiss": " Fianarantsoa",
+        "niveau": "M2",
+        "mention": "Mathématiques et Applications",
+        "journey": "Mathématiques et Informatiques pous la Sciences Social",
+        "registre": "20",
+    }
 
     attestation_validation_credit("4465", "2020", "2020-2021", data)

@@ -61,22 +61,20 @@ class ScriptLogging:
 
             logging.getLogger("uvicorn").propagate = False
             logging.basicConfig(
-                filename=f'{path}/logging.log',
-                level=logging.INFO,
-                filemode="a",
+                filename=f"{path}/logging.log", level=logging.INFO, filemode="a",
             )
         except FileExistsError as e:
             print(e)
         except FileNotFoundError as e:
             print(e)
 
-    def script_logging(self,filename, log_type: str, message: str) -> None:
+    def script_logging(self, filename, log_type: str, message: str) -> None:
         message_ = f"""
                 ####################################
                 {datetime.now()}:{filename}    
                 ####################################
                 """
         if log_type == "info":
-            logging.info(message_+f"\n {message}")
+            logging.info(message_ + f"\n {message}")
         elif log_type == "error":
             logging.error(message)

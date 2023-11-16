@@ -37,6 +37,7 @@ numpy = "*"
 watchfiles = "0.18.1"
 python-jose = {extras = ["cryptography"], version = "^3.1.0"}
 pymysql = "*"
+Pillow = "*"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.770"

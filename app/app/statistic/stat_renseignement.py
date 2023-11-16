@@ -16,9 +16,17 @@ def get_by_params(all_etudiant: any, titre: str, niveau: str) -> int:
 
 
 def create_stat_renseignement(data: Any, all_etudiant, db: Session, uuid_mention: str):
-    titre_stat = [{"name": "Année d'etude", "value": ["Sexe"]},
-                  {"name": "Admission en", "value": ["Nbr de demande reçue", "Nbr d'étudiants admis"]},
-                  {"name": "Droit d'inscription (Ariary)", "value": ["Droit d'inscription (Ariary)"]}]
+    titre_stat = [
+        {"name": "Année d'etude", "value": ["Sexe"]},
+        {
+            "name": "Admission en",
+            "value": ["Nbr de demande reçue", "Nbr d'étudiants admis"],
+        },
+        {
+            "name": "Droit d'inscription (Ariary)",
+            "value": ["Droit d'inscription (Ariary)"],
+        },
+    ]
 
     width: int = 83
     height: int = 10
@@ -32,9 +40,23 @@ def create_stat_renseignement(data: Any, all_etudiant, db: Session, uuid_mention
             pdf.set_font("arial", "BI", 9)
             for index, titre in enumerate(titre_stat):
                 if index == 0 or index == 2:
-                    pdf.cell(width - 30, height * 2, txt=titre["name"], border=1, ln=0, align="C")
+                    pdf.cell(
+                        width - 30,
+                        height * 2,
+                        txt=titre["name"],
+                        border=1,
+                        ln=0,
+                        align="C",
+                    )
                 else:
-                    pdf.cell(width, height, txt=f'{titre["name"]} {niv}', border=1, ln=0, align="C")
+                    pdf.cell(
+                        width,
+                        height,
+                        txt=f'{titre["name"]} {niv}',
+                        border=1,
+                        ln=0,
+                        align="C",
+                    )
             pdf.cell(0, height, txt="", border=0, ln=1, align="L")
 
             for index, titre in enumerate(titre_stat):
@@ -42,7 +64,14 @@ def create_stat_renseignement(data: Any, all_etudiant, db: Session, uuid_mention
                     if index == 0 or index == 2:
                         pdf.cell(width - 30, height, txt="", border=0, ln=0, align="C")
                     else:
-                        pdf.cell(width / (len(titre["value"])), height, txt=value, border=1, ln=0, align="C")
+                        pdf.cell(
+                            width / (len(titre["value"])),
+                            height,
+                            txt=value,
+                            border=1,
+                            ln=0,
+                            align="C",
+                        )
             pdf.cell(0, height, txt="", border=0, ln=1, align="L")
 
             for index_1, titre in enumerate(titre_stat):
@@ -52,14 +81,34 @@ def create_stat_renseignement(data: Any, all_etudiant, db: Session, uuid_mention
                     if index_1 == 0:
                         pdf.cell(width - 30, height, txt=niv, border=1, ln=0, align="C")
                     elif index_1 == 2:
-                        droit = crud.droit.get_by_niveau_and_annee(db=db, niveau=niv, annee=data['annee'],
-                                                                   uuid_mention=uuid_mention)
+                        droit = crud.droit.get_by_niveau_and_annee(
+                            db=db,
+                            niveau=niv,
+                            annee=data["annee"],
+                            uuid_mention=uuid_mention,
+                        )
                         if droit:
-                            pdf.cell(width - 30, height, txt=droit.droit, border=1, ln=0, align="C")
+                            pdf.cell(
+                                width - 30,
+                                height,
+                                txt=droit.droit,
+                                border=1,
+                                ln=0,
+                                align="C",
+                            )
                         else:
-                            pdf.cell(width - 30, height, txt="0", border=1, ln=0, align="C")
+                            pdf.cell(
+                                width - 30, height, txt="0", border=1, ln=0, align="C"
+                            )
                     else:
-                        pdf.cell(width / (len(titre["value"])), height, txt=str(response), border=1, ln=0, align="C")
+                        pdf.cell(
+                            width / (len(titre["value"])),
+                            height,
+                            txt=str(response),
+                            border=1,
+                            ln=0,
+                            align="C",
+                        )
 
             pdf.cell(0, height, txt="", border=0, ln=1, align="L")
 
@@ -68,7 +117,6 @@ def create_stat_renseignement(data: Any, all_etudiant, db: Session, uuid_mention
 
 
 class PDF(FPDF):
-
     def add_title(pdf: FPDF, data: Any, niveau: str):
 
         pdf.add_font("alger", "", "Algerian.ttf", uni=True)

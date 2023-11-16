@@ -1,6 +1,7 @@
 from datetime import datetime
 from fpdf import FPDF
 
+
 def create_pdf(data: any, pdf: FPDF, filename: str):
     line_height = pdf.font_size * 2.5
     lh_list = []  # list with proper line_height for each row
@@ -13,11 +14,11 @@ def create_pdf(data: any, pdf: FPDF, filename: str):
             word_list = datum.split()
             number_of_words = len(word_list)  # how many words
             if (
-                    number_of_words > 2
+                number_of_words > 2
             ):  # names and cities formed by 2 words like Los Angeles are ok)
                 use_default_height = 1
                 new_line_height = pdf.font_size * (
-                        number_of_words / 2
+                    number_of_words / 2
                 )  # new height change according to data
         if not use_default_height:
             lh_list.append(line_height)
@@ -41,7 +42,9 @@ def create_pdf(data: any, pdf: FPDF, filename: str):
                 align = "C"
             else:
                 col_width = 20
-            line_height = lh_list[j] - lh_list[j] / 4  # choose right height for current row
+            line_height = (
+                lh_list[j] - lh_list[j] / 4
+            )  # choose right height for current row
             pdf.multi_cell(
                 col_width,
                 line_height,

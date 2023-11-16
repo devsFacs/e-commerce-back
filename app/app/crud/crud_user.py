@@ -12,11 +12,24 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
         return db.query(User).filter(User.email == email).first()
 
-    def get_by_email_and_id_google(self, db: Session, *, email: str, id_google: str) -> Optional[User]:
-        return db.query(User).filter(and_(User.email == email, User.id_google == id_google)).first()
+    def get_by_email_and_id_google(
+        self, db: Session, *, email: str, id_google: str
+    ) -> Optional[User]:
+        return (
+            db.query(User)
+            .filter(and_(User.email == email, User.id_google == id_google))
+            .first()
+        )
 
-    def get_by_email_and_id_facebook(self, db: Session, *, email: str, id_facebook: str) -> Optional[User]:
-        return db.query(User).filter(and_(User.email == email, User.id_facebook == id_facebook)).first()
+    def get_by_email_and_id_facebook(
+        self, db: Session, *, email: str, id_facebook: str
+    ) -> Optional[User]:
+        return (
+            db.query(User)
+            .filter(and_(User.email == email, User.id_facebook == id_facebook))
+            .first()
+        )
+
     def get_by_name(self, db: Session, *, name: str) -> Optional[User]:
         return db.query(User).filter(User.name == name).first()
 
@@ -44,7 +57,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         return db_obj
 
     def update(
-            self, db: Session, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]
+        self, db: Session, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]
     ) -> User:
         if isinstance(obj_in, dict):
             update_data = obj_in
@@ -64,14 +77,20 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             return None
         return user
 
-    def authenticate_google(self, db: Session, *, email: str, id_google: str) -> Optional[User]:
+    def authenticate_google(
+        self, db: Session, *, email: str, id_google: str
+    ) -> Optional[User]:
         user = self.get_by_email_and_id_google(db, email=email, id_google=id_google)
         if not user:
             return None
         return user
 
-    def authenticate_facebook(self, db: Session, *, email: str, id_facebook: str) -> Optional[User]:
-        user = self.get_by_email_and_id_facebook(db, email=email, id_facebook=id_facebook)
+    def authenticate_facebook(
+        self, db: Session, *, email: str, id_facebook: str
+    ) -> Optional[User]:
+        user = self.get_by_email_and_id_facebook(
+            db, email=email, id_facebook=id_facebook
+        )
         if not user:
             return None
         return user
@@ -82,8 +101,8 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def is_superuser(self, user: User) -> bool:
         return user.is_superuser
 
-    def is_admin(self, user: User) -> bool:
-        return user.is_admin
+    def is_vendor(self, user: User) -> bool:
+        return user.is_vendors
 
 
 user = CRUDUser(User)

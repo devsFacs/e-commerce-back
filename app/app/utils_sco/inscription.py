@@ -8,7 +8,9 @@ import unidecode
 from app.utils import convert_date
 
 
-def attestation_inscription(num_carte: str, date: str, anne_univ: str, data: Any) -> str:
+def attestation_inscription(
+    num_carte: str, date: str, anne_univ: str, data: Any
+) -> str:
     pdf = FPDF("P", "mm", "a4")
     pdf.add_page()
     pdf.l_margin = 20
@@ -139,6 +141,3 @@ def attestation_inscription(num_carte: str, date: str, anne_univ: str, data: Any
     pdf.output(f"files/{num_carte}_inscription.pdf", "F")
 
     return f"files/{num_carte}_inscription.pdf"
-
-
-

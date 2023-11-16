@@ -13,6 +13,9 @@ class Vendors(Base):
     address = Column(Text)
     id_user = Column(Integer, ForeignKey("user.id"))
     logo_url = Column(String(256))
+    logo_thumbnail = Column(String(256))
+    code_promo = Column(String(256))
+    date_validation = Column(DateTime)
     latitude = Column(Float)
     longitude = Column(Float)
 

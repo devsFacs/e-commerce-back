@@ -14,4 +14,3 @@ class Category(Base):
 
     created_at = Column(DateTime, default=_get_date)
     updated_at = Column(DateTime, onupdate=_get_date)
-

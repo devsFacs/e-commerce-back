@@ -19,7 +19,6 @@ def get_by_params(all_etudiant: any, titre: str) -> int:
 
 
 class PDF(FPDF):
-
     def add_title(pdf: FPDF, data: Any, niveau: str):
 
         pdf.add_font("alger", "", "Algerian.ttf", uni=True)
@@ -77,11 +76,25 @@ class PDF(FPDF):
 
         pdf.cell(15, 10, txt="", ln=1, align="L")
 
-    def create_stat_bachelier(data: Any, all_etudiant,bacc_serie):
-        titre_stat = [{"name": "Nouveau Bachelier en : ",
-                       "value": ["Serie A1", "Serie A2", "Serie C", "Serie D", "Technique \n Génie civile",
-                                 "Technique Industrielle", "Technique Tertiaire",
-                                 "Technique Agricole", "Technologique", "Autre", "Ensemble"]}]
+    def create_stat_bachelier(data: Any, all_etudiant, bacc_serie):
+        titre_stat = [
+            {
+                "name": "Nouveau Bachelier en : ",
+                "value": [
+                    "Serie A1",
+                    "Serie A2",
+                    "Serie C",
+                    "Serie D",
+                    "Technique \n Génie civile",
+                    "Technique Industrielle",
+                    "Technique Tertiaire",
+                    "Technique Agricole",
+                    "Technologique",
+                    "Autre",
+                    "Ensemble",
+                ],
+            }
+        ]
 
         width: int = 285
         height: int = 10
@@ -92,28 +105,70 @@ class PDF(FPDF):
         pdf.set_font("arial", "BI", 8)
         pdf.set_left_margin(5)
         for index, titre in enumerate(titre_stat):
-            pdf.cell(width, height, txt=f'{titre["name"]}{data["annee"]}', border=1, align="C")
+            pdf.cell(
+                width,
+                height,
+                txt=f'{titre["name"]}{data["annee"]}',
+                border=1,
+                align="C",
+            )
         pdf.cell(0, height, txt="", ln=1)
 
         for titre in titre_stat:
             for index, value in enumerate(titre["value"]):
                 if index < 4 or index > 8:
-                    pdf.cell((width / len(titre["value"])) - 10, height, txt=value, border=1, align="C")
+                    pdf.cell(
+                        (width / len(titre["value"])) - 10,
+                        height,
+                        txt=value,
+                        border=1,
+                        align="C",
+                    )
                 elif index == 10:
-                    pdf.cell((width / len(titre["value"])), height, txt=value, border=1, align="C")
+                    pdf.cell(
+                        (width / len(titre["value"])),
+                        height,
+                        txt=value,
+                        border=1,
+                        align="C",
+                    )
                 else:
-                    pdf.cell((width / len(titre["value"])) + 12, height, txt=value, border=1, align="C")
+                    pdf.cell(
+                        (width / len(titre["value"])) + 12,
+                        height,
+                        txt=value,
+                        border=1,
+                        align="C",
+                    )
             pdf.cell(0, height, txt="", ln=1, align="L")
 
         for titre in titre_stat:
             for index, value in enumerate(titre["value"]):
                 response = get_by_params(all_etudiant, value)
                 if index < 4 or index > 8:
-                    pdf.cell((width / len(titre["value"])) - 10, height, txt=str(response), border=1, align="C")
+                    pdf.cell(
+                        (width / len(titre["value"])) - 10,
+                        height,
+                        txt=str(response),
+                        border=1,
+                        align="C",
+                    )
                 elif index == 10:
-                    pdf.cell((width / len(titre["value"])), height, txt=str(response), border=1, align="C")
+                    pdf.cell(
+                        (width / len(titre["value"])),
+                        height,
+                        txt=str(response),
+                        border=1,
+                        align="C",
+                    )
                 else:
-                    pdf.cell((width / len(titre["value"])) + 12, height, txt=str(response), border=1, align="C")
+                    pdf.cell(
+                        (width / len(titre["value"])) + 12,
+                        height,
+                        txt=str(response),
+                        border=1,
+                        align="C",
+                    )
             pdf.cell(0, height, txt="", ln=1)
 
         bas_1 = "N.B: Veuillez remplir séparement le canevas par filière, type de formation et année d' études "

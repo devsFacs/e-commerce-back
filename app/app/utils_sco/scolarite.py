@@ -5,7 +5,9 @@ from app.liste import header
 from app.utils import convert_date
 
 
-def create_certificat_scolarite(num_carte: str, date: str, anne_univ: str, data: Any) -> str:
+def create_certificat_scolarite(
+    num_carte: str, date: str, anne_univ: str, data: Any
+) -> str:
     pdf = FPDF("P", "mm", "a4")
     pdf.add_page()
     pdf.l_margin = 20
@@ -151,4 +153,3 @@ def create_certificat_scolarite(num_carte: str, date: str, anne_univ: str, data:
 
     pdf.output(f"files/{num_carte}_scolarite.pdf", "F")
     return f"files/{num_carte}_scolarite.pdf"
-

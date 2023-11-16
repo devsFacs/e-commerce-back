@@ -21,7 +21,7 @@ router = APIRouter()
 
 @router.post("/login/access-token", response_model=schemas.Token)
 def login_access_token(
-        db: Session = Depends(deps.get_db), form_data: OAuth2PasswordRequestForm = Depends()
+    db: Session = Depends(deps.get_db), form_data: OAuth2PasswordRequestForm = Depends()
 ) -> Any:
     """
     OAuth2 compatible token login, get an access token for future requests
@@ -37,30 +37,30 @@ def login_access_token(
 
     token = security.create_access_token(
         data={"id": str(user.id), "email": form_data.username},
-        expires_delta=access_token_expires
+        expires_delta=access_token_expires,
     )
     token_data = deps.get_user(token)
     user = crud.user.get(db=db, id=token_data.id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    return {
-        'access_token': token,
-        'token_type': "Bearer"
-    }
+    return {"access_token": token, "token_type": "Bearer"}
 
 
 @router.post("/login/access-token/other", response_model=schemas.Token)
 def login_access_token(
-        *,
-        db: Session = Depends(deps.get_db), data_auth: schemas.UserLogin
+    *, db: Session = Depends(deps.get_db), data_auth: schemas.UserLogin
 ) -> Any:
     """
     OAuth2 compatible token login, get an access token for future requests
     """
     if data_auth.type_auth == "google":
-        user = crud.user.authenticate_google(db=db, email=data_auth.email, id_google=data_auth.id_google)
+        user = crud.user.authenticate_google(
+            db=db, email=data_auth.email, id_google=data_auth.id_google
+        )
     else:
-        user = crud.user.authenticate_facebook(db=db, email=data_auth.email, id_facebook=data_auth.id_facebook)
+        user = crud.user.authenticate_facebook(
+            db=db, email=data_auth.email, id_facebook=data_auth.id_facebook
+        )
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
     elif not crud.user.is_active(user):
@@ -69,16 +69,13 @@ def login_access_token(
 
     token = security.create_access_token(
         data={"id": str(user.id), "email": data_auth.email},
-        expires_delta=access_token_expires
+        expires_delta=access_token_expires,
     )
     token_data = deps.get_user(token)
     user = crud.user.get(db=db, id=token_data.id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    return {
-        'access_token': token,
-        'token_type': "Bearer"
-    }
+    return {"access_token": token, "token_type": "Bearer"}
 
 
 @router.post("/login/test-token", response_model=schemas.User)
@@ -130,9 +127,9 @@ def recover_password(email: str, db: Session = Depends(deps.get_db)) -> Any:
 
 @router.post("/reset-password/", response_model=schemas.Msg)
 def reset_password(
-        token: str = Body(...),
-        new_password: str = Body(...),
-        db: Session = Depends(deps.get_db),
+    token: str = Body(...),
+    new_password: str = Body(...),
+    db: Session = Depends(deps.get_db),
 ) -> Any:
     """
     Reset password

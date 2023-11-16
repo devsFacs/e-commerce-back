@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import List, Optional
 from pydantic import BaseModel, EmailStr
 from .category import Category
+from .attribute import Attribute
 
 
 # Shared properties
@@ -9,21 +10,20 @@ class ProductBase(BaseModel):
     name: Optional[str]
     description: Optional[str]
     price: Optional[float]
-    attribute: Optional[str]
+    id_attribute: Optional[int]
     discount: Optional[float]
-    code_promo: Optional[str]
     id_category: Optional[int]
-    valid_code_start: Optional[datetime]
-    valid_code_end: Optional[datetime]
     image_thumbnail: Optional[str]
     image_url: Optional[str]
+    colors_disp: Optional[str]
+    size_disp: Optional[str]
 
 
 # Properties to receive via API on creation
 class ProductCreate(ProductBase):
     name: str
-    description: Optional[str]
     price: float
+    id_category: int
     image_url: str
     image_thumbnail: str
 
@@ -36,6 +36,7 @@ class ProductUpdate(ProductBase):
 class ProductInDBBase(ProductBase):
     id: Optional[int]
     id_category: Optional[int]
+    id_attribute: Optional[int]
 
     class Config:
         orm_mode = True
@@ -44,6 +45,7 @@ class ProductInDBBase(ProductBase):
 # Additional properties to return via API
 class Product(ProductInDBBase):
     category: Category
+    attribute: Optional[Attribute]
 
 
 # Additional properties stored in DB

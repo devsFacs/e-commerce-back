@@ -13,4 +13,3 @@ class TokenPayload(BaseModel):
     email: Optional[EmailStr]
     role: Optional[str] = None
     permissions: Optional[str] = None
-

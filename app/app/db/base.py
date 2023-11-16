@@ -3,8 +3,8 @@
 from app.db.base_class import Base  # noqa
 from app.models.user import User  # noqa
 from app.models.category import Category  # noqa
+from app.models.attribute import Attribute  # noqa
 from app.models.product import Product  # noqa
-from app.models.product_details import ProductDetails  # noqa
 from app.models.user_product import UserProduct  # noqa
 from app.models.product_user_view import ProductUserView  # noqa
 from app.models.product_user_like import ProductUserLike  # noqa

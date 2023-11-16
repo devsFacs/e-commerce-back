@@ -48,7 +48,7 @@ class PDF(FPDF):
 
     def create_list_inscrit(sems: str, parcour: str, data: Any, etudiants: Any):
         pdf = PDF("P", "mm", "a4")
-        pdf.watermark('Faculté des Sciences',  font_style='BI')
+        pdf.watermark("Faculté des Sciences", font_style="BI")
         pdf.add_page()
         titre = "LISTE DES ÉTUDIANTS INSCRITS"
         PDF.add_title(pdf=pdf, data=data, sems=sems, title=titre)
@@ -74,5 +74,7 @@ class PDF(FPDF):
             pdf.set_font("arial", "I", 10)
             pdf.cell(163, 5, txt=name, border=1, ln=0, align="L")
             num_ += 1
-        pdf.output(f"files/pdf/liste/list_inscit_{sems}_{parcour}_{data['anne']}.pdf", "F")
+        pdf.output(
+            f"files/pdf/liste/list_inscit_{sems}_{parcour}_{data['anne']}.pdf", "F"
+        )
         return f"files/pdf/liste/list_inscit_{sems}_{parcour}_{data['anne']}.pdf"

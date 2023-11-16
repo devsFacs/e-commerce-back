@@ -1,3 +1,4 @@
+from datetime import date
 from typing import List, Optional
 from pydantic import BaseModel, EmailStr
 from .user import User
@@ -8,7 +9,10 @@ class VendorsBase(BaseModel):
     name: Optional[str]
     address: Optional[str]
     logo_url: Optional[str]
+    logo_thumbnail: Optional[str]
     id_user: Optional[int]
+    code_promo: Optional[str]
+    date_validation: Optional[date]
     latitude: Optional[str]
     longitude: Optional[str]
 

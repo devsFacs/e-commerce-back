@@ -7,7 +7,7 @@ from pydrive.drive import GoogleDrive
 _drive: Optional[GoogleDrive] = None
 
 client_json_path = "/app/credentials/client_secrets.json"
-GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = client_json_path
+GoogleAuth.DEFAULT_SETTINGS["client_config_file"] = client_json_path
 
 
 def get_drive() -> GoogleDrive:

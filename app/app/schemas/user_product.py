@@ -1,20 +1,20 @@
 from typing import List, Optional
 from pydantic import BaseModel, EmailStr
 from .user import User
-from .product_details import ProductDetails
+from .product import Product
 
 
 # Shared properties
 class UserProductBase(BaseModel):
     id_user: Optional[int]
-    id_product_details: Optional[int]
+    id_product: Optional[int]
     quantity: Optional[int]
 
 
 # Properties to receive via API on creation
 class UserProductCreate(UserProductBase):
     id_user: int
-    id_product_details: int
+    id_product: int
     quantity: int
 
 
@@ -26,7 +26,7 @@ class UserProductUpdate(UserProductBase):
 class UserProductInDBBase(UserProductBase):
     id: int
     id_user: int
-    id_product_details: int
+    id_product: int
 
     class Config:
         orm_mode = True
@@ -35,7 +35,7 @@ class UserProductInDBBase(UserProductBase):
 # Additional properties to return via API
 class UserProduct(UserProductInDBBase):
     user: User
-    product_details: ProductDetails
+    product: Product
 
 
 # Additional properties stored in DB

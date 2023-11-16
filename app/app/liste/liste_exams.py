@@ -118,10 +118,12 @@ class PDF(FPDF):
         pdf.set_font("arial", "I", 12)
         pdf.cell(0, 8, txt=num, ln=1)
 
-    def create_list_examen(sems: str, journey: str, data: Any, matiers: Any, etudiants: Any):
+    def create_list_examen(
+        sems: str, journey: str, data: Any, matiers: Any, etudiants: Any
+    ):
         pdf = PDF("P", "mm", "a4")
         pdf.add_page()
-        pdf.watermark('Faculté des Sciences',  font_style='BI')
+        pdf.watermark("Faculté des Sciences", font_style="BI")
 
         titre = "FICHE DE PRÉSENCE PAR U.E"
         PDF.add_title(pdf=pdf, data=data, sems=sems, title=titre)
@@ -133,21 +135,21 @@ class PDF(FPDF):
         pdf.set_font("arial", "B", 10)
         pdf.cell(0, 5, txt="", ln=1, align="C")
 
-        for i, ue in enumerate(matiers['ue']):
+        for i, ue in enumerate(matiers["ue"]):
             pdf.set_margin(1)
             pdf.set_top_margin(12)
-            num_ = int(data['skip'])
+            num_ = int(data["skip"])
             titre_ue = f"Unité d'enseignement {ue['name']}"
-            dim = set_dimention(ue['nbr_ec'])
-            pdf.add_page(orientation=set_orientation(ue['nbr_ec']))
+            dim = set_dimention(ue["nbr_ec"])
+            pdf.add_page(orientation=set_orientation(ue["nbr_ec"]))
             pdf.set_left_margin(1)
             pdf.set_font("alger", "", 10)
             pdf.cell(dim - 1, 6, txt=titre_ue)
-            for j, ec in enumerate(ue['ec']):
+            for j, ec in enumerate(ue["ec"]):
                 pdf.cell(1, 6, txt="")
                 pdf.set_font("arial", "I", 12)
                 date = "le,__/__/____"
-                pdf.cell(50, 6, txt=date, border=1, align='C')
+                pdf.cell(50, 6, txt=date, border=1, align="C")
             pdf.cell(1, 7, txt="", ln=1)
             pdf.set_font("arial", "BI", 10)
             pdf.cell(1, 5, txt="")
@@ -156,8 +158,8 @@ class PDF(FPDF):
             pdf.cell(18, 5, txt=num_c, border=1)
             pdf.cell(1, 5, txt="")
             pdf.cell(dim - 34, 5, txt=nom_et_prenom, border=1, align="C")
-            for j, ec in enumerate(ue['ec']):
-                taille = set_police(ec['name'])
+            for j, ec in enumerate(ue["ec"]):
+                taille = set_police(ec["name"])
                 pdf.cell(1, 8, txt="")
                 pdf.set_font("arial", "I", taille)
                 titre_ec = f"{ec['name']}"
@@ -166,8 +168,8 @@ class PDF(FPDF):
             for i, etudiant in enumerate(etudiants):
                 num_carte_ = f"{etudiant['num_carte']}"
                 name = f"{clear_name(etudiant['last_name'])} {etudiant['first_name']}"
-                if etudiant['num_carte'] == "33":
-                    print(dim-34, name, len(name))
+                if etudiant["num_carte"] == "33":
+                    print(dim - 34, name, len(name))
                 pdf.cell(1, 7, txt="", ln=1)
                 pdf.set_font("arial", "I", 10)
                 pdf.cell(1, 5, txt="")
@@ -178,7 +180,7 @@ class PDF(FPDF):
                 pdf.set_font("arial", "I", set_police_name(name, dim - 34))
                 pdf.cell(dim - 34, 5, txt=name, border=1, align="L")
                 num_ += 1
-                for i in range(ue['nbr_ec']):
+                for i in range(ue["nbr_ec"]):
                     pdf.cell(2, 5, txt="")
                     pdf.cell(24, 5, txt="", border=1)
                     pdf.cell(1, 5, txt="")
@@ -195,7 +197,7 @@ class PDF(FPDF):
         pdf.cell(18, 5, txt=num_c, border=1)
         pdf.cell(1, 5, txt="")
         pdf.cell(160, 5, txt=nom_et_prenom, border=1, align="C")
-        num_ = int(data['skip'])
+        num_ = int(data["skip"])
         for i, etudiant in enumerate(etudiants):
             num_carte_ = etudiant["num_carte"]
             name = f"{etudiant['last_name']} {etudiant['first_name']}"
@@ -210,5 +212,8 @@ class PDF(FPDF):
             pdf.cell(160, 5, txt=name, border=1, align="L")
             num_ += 1
 
-        pdf.output(f"files/pdf/liste/list_exam_{sems}_{journey}_{data['skip']}_à_{data['limit']}_{data['anne']}.pdf", "F")
+        pdf.output(
+            f"files/pdf/liste/list_exam_{sems}_{journey}_{data['skip']}_à_{data['limit']}_{data['anne']}.pdf",
+            "F",
+        )
         return f"files/pdf/liste/list_exam_{sems}_{journey}_{data['skip']}_à_{data['limit']}_{data['anne']}.pdf"

@@ -7,8 +7,10 @@ from sqlalchemy.orm import Session
 from app.liste import header
 
 
-def get_nbr_etudiant(db: Session, schemas: str, niveau: str, etat: str, sexe: str, uuid_journey: str) -> str:
-    if etat == 'N':
+def get_nbr_etudiant(
+    db: Session, schemas: str, niveau: str, etat: str, sexe: str, uuid_journey: str
+) -> str:
+    if etat == "N":
         etat = "Passant"
     elif etat == "R":
         etat = "Redoublant"
@@ -28,27 +30,36 @@ def get_nbr_etudiant(db: Session, schemas: str, niveau: str, etat: str, sexe: st
 
     all_student = []
     if etat != "M" and etat != "F" and etat != "Total":
-        all_student = crud.ancien_student.get_for_stat(db=db, uuid_journey=uuid_journey, semester=niveau, sex=sexe,
-                                                       type=etat.upper(), college_year=schemas)
+        all_student = crud.ancien_student.get_for_stat(
+            db=db,
+            uuid_journey=uuid_journey,
+            semester=niveau,
+            sex=sexe,
+            type=etat.upper(),
+            college_year=schemas,
+        )
     elif etat == "M":
-        all_student = crud.ancien_student.get_by_sex_for_stat(db=db,
-                                                               college_year=schemas,
-                                                               uuid_journey=uuid_journey,
-                                                               semester=niveau,
-                                                               sex="MASCULIN")
+        all_student = crud.ancien_student.get_by_sex_for_stat(
+            db=db,
+            college_year=schemas,
+            uuid_journey=uuid_journey,
+            semester=niveau,
+            sex="MASCULIN",
+        )
 
     elif etat == "F":
-        all_student = crud.ancien_student.get_by_sex_for_stat(db=db,
-                                                                college_year=schemas,
-                                                                uuid_journey=uuid_journey,
-                                                                semester=niveau,
-                                                                sex="FEMININ")
+        all_student = crud.ancien_student.get_by_sex_for_stat(
+            db=db,
+            college_year=schemas,
+            uuid_journey=uuid_journey,
+            semester=niveau,
+            sex="FEMININ",
+        )
 
     elif etat == "Total":
-        all_student = crud.ancien_student.get_by_journey_for_stat(db=db,
-                                                                   college_year=schemas,
-                                                                   uuid_journey=uuid_journey,
-                                                                   semester=niveau)
+        all_student = crud.ancien_student.get_by_journey_for_stat(
+            db=db, college_year=schemas, uuid_journey=uuid_journey, semester=niveau
+        )
 
     return len(all_student)
 
@@ -149,7 +160,6 @@ class PDF(FPDF):
             ln = 0
             tabulation = 10
 
-
         pdf.cell(0, 18, txt="", ln=1, align="C")
 
         pdf.cell(tabulation, 6, txt="")
@@ -184,9 +194,12 @@ class PDF(FPDF):
         pdf.cell(15, 10, txt="", ln=1)
 
     def create_all_statistic(db: Session, data: Any, etudiant: Any, schemas: str):
-        titre_stat = [{"name": '', "value": ["Niveau", "journey"]}, {"name": "masculin", "value": ["N", "R", "T+"]},
-                      {"name": "feminin", "value": ["N", "R", "T+"]},
-                      {"name": "ensemble", "value": ["M", "F", "Total"]}]
+        titre_stat = [
+            {"name": "", "value": ["Niveau", "journey"]},
+            {"name": "masculin", "value": ["N", "R", "T+"]},
+            {"name": "feminin", "value": ["N", "R", "T+"]},
+            {"name": "ensemble", "value": ["M", "F", "Total"]},
+        ]
 
         niveau_ = ["L1", "L2", "L3", "M1", "M2", "H"]
 
@@ -198,7 +211,7 @@ class PDF(FPDF):
         PDF.add_title(pdf=pdf, data=data, type="total")
         pdf.set_margin(20)
         for titre in titre_stat:
-            if titre["name"] != '':
+            if titre["name"] != "":
                 pdf.set_font("arial", "BI", 10)
                 pdf.cell(width, height, txt=titre["name"].upper(), border=1, align="C")
             else:
@@ -208,7 +221,14 @@ class PDF(FPDF):
         for titre in titre_stat:
             for value in titre["value"]:
                 pdf.set_font("arial", "BI", 10)
-                pdf.cell(width / (len(titre["value"])), height, txt=value, border=1, ln=0, align="C")
+                pdf.cell(
+                    width / (len(titre["value"])),
+                    height,
+                    txt=value,
+                    border=1,
+                    ln=0,
+                    align="C",
+                )
         pdf.cell(0, height, txt="", ln=1)
 
         pdf.cell(0, 1, txt="", ln=1)
@@ -219,49 +239,99 @@ class PDF(FPDF):
                         if index_2 == 0:
                             if index == len(etudiant) - 1:
 
-                                pdf.cell(width / (len(titre["value"])), height * len(journey[niveau_[index]]), txt="",
-                                         border=1, align='C')
+                                pdf.cell(
+                                    width / (len(titre["value"])),
+                                    height * len(journey[niveau_[index]]),
+                                    txt="",
+                                    border=1,
+                                    align="C",
+                                )
                             else:
-                                pdf.cell(width / (len(titre["value"])), height * len(journey[niveau_[index]]),
-                                         txt=niveau_[index], border=1, align='C')
+                                pdf.cell(
+                                    width / (len(titre["value"])),
+                                    height * len(journey[niveau_[index]]),
+                                    txt=niveau_[index],
+                                    border=1,
+                                    align="C",
+                                )
                         elif index_2 == 1:
                             for index_3, parc in enumerate(journey[niveau_[index]]):
                                 if index_3 == 0:
-                                    pdf.cell(width / (len(titre["value"])), height, txt=parc["name"], border=1,
-                                             align="C")
+                                    pdf.cell(
+                                        width / (len(titre["value"])),
+                                        height,
+                                        txt=parc["name"],
+                                        border=1,
+                                        align="C",
+                                    )
                                     for index_4, titre_1 in enumerate(titre_stat):
                                         if index_4 != 0:
                                             for value in titre_1["value"]:
                                                 pdf.set_font("arial", "BI", 10)
                                                 if index == len(etudiant) - 1:
-                                                    pdf.cell(width / (len(titre_1["value"])), height, txt=str(0),
-                                                             border=1, align='C')
+                                                    pdf.cell(
+                                                        width / (len(titre_1["value"])),
+                                                        height,
+                                                        txt=str(0),
+                                                        border=1,
+                                                        align="C",
+                                                    )
                                                 else:
-                                                    value_stat = get_nbr_etudiant(db, schemas, niveau_[index], value,
-                                                                                  titre_1["name"].upper(),
-                                                                                  str(parc["uuid"]))
-                                                    pdf.cell(width / (len(titre_1["value"])), height,
-                                                             txt=str(value_stat),
-                                                             border=1, align='C')
+                                                    value_stat = get_nbr_etudiant(
+                                                        db,
+                                                        schemas,
+                                                        niveau_[index],
+                                                        value,
+                                                        titre_1["name"].upper(),
+                                                        str(parc["uuid"]),
+                                                    )
+                                                    pdf.cell(
+                                                        width / (len(titre_1["value"])),
+                                                        height,
+                                                        txt=str(value_stat),
+                                                        border=1,
+                                                        align="C",
+                                                    )
                                     pdf.cell(0, height, txt="", ln=1)
                                 else:
-                                    pdf.cell(width / (len(titre["value"])), height, txt='')
-                                    pdf.cell(width / (len(titre["value"])), height, txt=parc["name"], border=1,
-                                             align='C')
+                                    pdf.cell(
+                                        width / (len(titre["value"])), height, txt=""
+                                    )
+                                    pdf.cell(
+                                        width / (len(titre["value"])),
+                                        height,
+                                        txt=parc["name"],
+                                        border=1,
+                                        align="C",
+                                    )
                                     for index_4, titre_1 in enumerate(titre_stat):
                                         if index_4 != 0:
                                             for value in titre_1["value"]:
                                                 pdf.set_font("arial", "BI", 10)
                                                 if index == len(etudiant) - 1:
-                                                    pdf.cell(width / (len(titre_1["value"])), height, txt=str(0),
-                                                             border=1, align="C")
+                                                    pdf.cell(
+                                                        width / (len(titre_1["value"])),
+                                                        height,
+                                                        txt=str(0),
+                                                        border=1,
+                                                        align="C",
+                                                    )
                                                 else:
-                                                    value_stat = get_nbr_etudiant(db, schemas, niveau_[index], value,
-                                                                                  titre_1["name"].upper(),
-                                                                                  str(parc["uuid"]))
-                                                    pdf.cell(width / (len(titre_1["value"])), height,
-                                                             txt=str(value_stat),
-                                                             border=1, align="C")
+                                                    value_stat = get_nbr_etudiant(
+                                                        db,
+                                                        schemas,
+                                                        niveau_[index],
+                                                        value,
+                                                        titre_1["name"].upper(),
+                                                        str(parc["uuid"]),
+                                                    )
+                                                    pdf.cell(
+                                                        width / (len(titre_1["value"])),
+                                                        height,
+                                                        txt=str(value_stat),
+                                                        border=1,
+                                                        align="C",
+                                                    )
                                     pdf.cell(0, height, txt="", ln=1)
             pdf.cell(0, 1, txt="", ln=1)
         bas_1 = "N: Nouveau, R: Redoublant, T+: Triplant et plus"
@@ -274,9 +344,12 @@ class PDF(FPDF):
         return f"files/statistic_total.pdf"
 
     def create_statistic_by_years(data: Any, all_niveau: Any, schemas: str):
-        titre_stat = [{"name": '', "value": ["Age"]}, {"name": "masculin", "value": ["N", "R", "T+", "S/Tot"]},
-                      {"name": "feminin", "value": ["N", "R", "T+", "S/Tot"]},
-                      {"name": "ensemble", "value": ["N", "R", "T+", "Total"]}]
+        titre_stat = [
+            {"name": "", "value": ["Age"]},
+            {"name": "masculin", "value": ["N", "R", "T+", "S/Tot"]},
+            {"name": "feminin", "value": ["N", "R", "T+", "S/Tot"]},
+            {"name": "ensemble", "value": ["N", "R", "T+", "Total"]},
+        ]
 
         width: int = 48
         height: int = 7
@@ -293,9 +366,15 @@ class PDF(FPDF):
                     PDF.add_title(pdf=pdf, data=data, type="age")
                     pdf.set_margin(9)
                     for titre in titre_stat:
-                        if titre["name"] != '':
+                        if titre["name"] != "":
                             pdf.set_font("arial", "BI", 10)
-                            pdf.cell(width, height, txt=titre["name"].upper(), border=1, align="C")
+                            pdf.cell(
+                                width,
+                                height,
+                                txt=titre["name"].upper(),
+                                border=1,
+                                align="C",
+                            )
                         else:
                             pdf.cell(width, height, txt="")
                     pdf.cell(0, height, txt="", ln=1)
@@ -303,41 +382,93 @@ class PDF(FPDF):
                     for titre in titre_stat:
                         for value in titre["value"]:
                             pdf.set_font("arial", "BI", 10)
-                            pdf.cell(width / (len(titre["value"])), height, txt=value, border=1, align="C")
+                            pdf.cell(
+                                width / (len(titre["value"])),
+                                height,
+                                txt=value,
+                                border=1,
+                                align="C",
+                            )
                     pdf.cell(0, height, txt="", ln=1)
 
                     for index in range(16):
                         for index_1, titre in enumerate(titre_stat):
                             for value in titre["value"]:
                                 pdf.set_font("arial", "BI", 10)
-                                response = get_by_params(parc["etudiants"], titre["name"].upper(), value, index + 15)
+                                response = get_by_params(
+                                    parc["etudiants"],
+                                    titre["name"].upper(),
+                                    value,
+                                    index + 15,
+                                )
                                 if index == 0:
                                     if index_1 == 0:
-                                        pdf.cell(width / (len(titre["value"])), height, txt="Moins de 16 ans",
-                                                 border=1, align="C")
+                                        pdf.cell(
+                                            width / (len(titre["value"])),
+                                            height,
+                                            txt="Moins de 16 ans",
+                                            border=1,
+                                            align="C",
+                                        )
                                     else:
-                                        pdf.cell(width / (len(titre["value"])), height, txt=str(response), border=1,
-                                                 align="C")
+                                        pdf.cell(
+                                            width / (len(titre["value"])),
+                                            height,
+                                            txt=str(response),
+                                            border=1,
+                                            align="C",
+                                        )
                                 elif index == 14:
                                     if index_1 == 0:
-                                        pdf.cell(width / (len(titre["value"])), height, txt="29+", border=1, align="C")
+                                        pdf.cell(
+                                            width / (len(titre["value"])),
+                                            height,
+                                            txt="29+",
+                                            border=1,
+                                            align="C",
+                                        )
                                     else:
-                                        pdf.cell(width / (len(titre["value"])), height, txt=str(response), border=1,
-                                                 align="C")
+                                        pdf.cell(
+                                            width / (len(titre["value"])),
+                                            height,
+                                            txt=str(response),
+                                            border=1,
+                                            align="C",
+                                        )
                                 elif index == 15:
                                     if index_1 == 0:
-                                        pdf.cell(width / (len(titre["value"])), height, txt="Total", border=1,
-                                                 align="C")
+                                        pdf.cell(
+                                            width / (len(titre["value"])),
+                                            height,
+                                            txt="Total",
+                                            border=1,
+                                            align="C",
+                                        )
                                     else:
-                                        pdf.cell(width / (len(titre["value"])), height, txt=str(response), border=1,
-                                                 align="C")
+                                        pdf.cell(
+                                            width / (len(titre["value"])),
+                                            height,
+                                            txt=str(response),
+                                            border=1,
+                                            align="C",
+                                        )
                                 else:
                                     if index_1 == 0:
-                                        pdf.cell(width / (len(titre["value"])), height, txt=str(index + 15), border=1,
-                                                 align="C")
+                                        pdf.cell(
+                                            width / (len(titre["value"])),
+                                            height,
+                                            txt=str(index + 15),
+                                            border=1,
+                                            align="C",
+                                        )
                                     else:
-                                        pdf.cell(width / (len(titre["value"])), height, txt=str(response), border=1,
-                                                 align="C")
+                                        pdf.cell(
+                                            width / (len(titre["value"])),
+                                            height,
+                                            txt=str(response),
+                                            border=1,
+                                            align="C",
+                                        )
 
                         pdf.cell(0, height, txt="", ln=1)
 

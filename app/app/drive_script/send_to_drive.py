@@ -3,8 +3,15 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from app import crud
-from app.drive_script import create_folder_with_test, get_folder_file_id_by_name, \
-    check_if_folder_already_exists, move_all_file, write_data_title, write_all_data, create_worksheet
+from app.drive_script import (
+    create_folder_with_test,
+    get_folder_file_id_by_name,
+    check_if_folder_already_exists,
+    move_all_file,
+    write_data_title,
+    write_all_data,
+    create_worksheet,
+)
 from app.utils import check_table_info, check_columns_exist
 
 
@@ -45,7 +52,9 @@ def write_data_to_drive(db: Session) -> Any:
         foolder_name = f"annee {anne_univ.title}"
         parent_id = get_folder_file_id_by_name(foolder_name)
         if parent_id:
-            spreadsheet_id = get_folder_file_id_by_name("etudiants_et_matiers", parent_id)
+            spreadsheet_id = get_folder_file_id_by_name(
+                "etudiants_et_matiers", parent_id
+            )
             if spreadsheet_id:
                 all_table = check_table_info(schema)
                 for table in all_table:
@@ -66,4 +75,9 @@ def write_data_to_drive(db: Session) -> Any:
 
 def write_data(spreadsheet_id: str, schema: str, table: str, key: str) -> Any:
     all_data = crud.save.read_all_data(schema, table)
-    write_all_data(spreadsheet_id=spreadsheet_id, sheet_name=table, all_data=all_data, key_unique=key)
+    write_all_data(
+        spreadsheet_id=spreadsheet_id,
+        sheet_name=table,
+        all_data=all_data,
+        key_unique=key,
+    )

@@ -1,7 +1,9 @@
 from typing import List
 
 from app import schemas
-from fastapi import  WebSocket
+from fastapi import WebSocket
+
+
 class ConnectionManager:
     def __init__(self):
         self.active_connections: List[schemas.SocketModel] = []
