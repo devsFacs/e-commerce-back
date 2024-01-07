@@ -14,3 +14,25 @@ services:
       dockerfile: backend.dockerfile
       args:
         INSTALL_DEV: ${INSTALL_DEV-false}
+    ports:
+      - "8080:8080"  # Adjust the port if needed
+  db:
+    image: mysql
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"  # Map MySQL port if necessary
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: db  # Use the service name of the MySQL container
+      PMA_PORT: 3306  # MySQL port
+    ports:
+      - "8090:80"  # Adjust the port if needed
+volumes:
+  mysql_data:
